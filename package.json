@@ -1,0 +1,31 @@
+{
+  "name": "api_mamamia",
+  "version": "1.0.0",
+  "description": "RESTFull API Mamamia Planner",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aliwafa16/api_mamamia.git"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "restfull",
+    "api"
+  ],
+  "author": "Aliwafa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aliwafa16/api_mamamia/issues"
+  },
+  "homepage": "https://github.com/aliwafa16/api_mamamia#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.2"
+  }
+}
