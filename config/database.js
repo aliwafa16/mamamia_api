@@ -1,6 +1,6 @@
 const Sequelize =  require('sequelize');
 
-const sequelize = new Sequelize('aulstore','root','',{
+const sequelize = new Sequelize('mamamia_planner','root','',{
     host : 'localhost',
     dialect : 'mysql'
 });
