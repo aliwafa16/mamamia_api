@@ -3,6 +3,8 @@ const BahanModel = require('../models/BahanModel');
 const response = require ('../helpers/respons-parser');
 const sequelize = require('../config/database');
 
+const { Op } = require("sequelize");
+
 ResepModel.hasMany(BahanModel,{foreignKey:'id_resep'});
 
 const Resep_Controller = {
@@ -47,12 +49,10 @@ const Resep_Controller = {
         try {
             const resep = await ResepModel.findAll({
                 where : {
-                    nama_resep : {
-                        [sequelize.op.like] : '%' + req.params.term +'%'
-                    }
+                    [Op.substring] : {nama_resep : req.params.term}
                 }
             })
-            response.success(res, {data:resep})
+                response.success(res, {data:resep})
         }catch(err){
             console.log(err)
             response.error(res, { error: err.message });
