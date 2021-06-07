@@ -89,7 +89,8 @@ const Resep_Controller = {
             });
             response.success(res, { message: 'update data success!' });
         }catch(err){
-
+            console.log(err)
+            response.error(res, { error: err.message });
         }
     }
 }
