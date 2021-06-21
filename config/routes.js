@@ -5,6 +5,7 @@ const Resep = require('../controllers/ResepController');
 const Bahan = require('../controllers/BahanController');
 const jadwal = require('../controllers/PenjadawalanController')
 const user = require('../controllers/UserController');
+const registrasi = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -50,5 +51,10 @@ router.get('/user/:id', user.getUserByID);
 router.post('/user', user.addUser);
 router.put('/user/:id', user.updateUser);
 router.delete('/user/:id', user.deleteUser);
+
+
+
+// ROUTE REGISTRASI
+router.post('/sign-up', registrasi.signUp);
 
 module.exports = router;
