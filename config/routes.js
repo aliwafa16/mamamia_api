@@ -56,5 +56,6 @@ router.delete('/user/:id', user.deleteUser);
 
 // ROUTE REGISTRASI
 router.post('/sign-up', registrasi.signUp);
+router.post('/sign-in', registrasi.signIn);
 
 module.exports = router;
