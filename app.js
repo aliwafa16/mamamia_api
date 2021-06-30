@@ -1,8 +1,11 @@
 // Import module express
 const express = require('express');
 
-// Import module BodyParser
+const multer = require('multer');
+
 const bodyParser = require('body-parser');
+
+const path = require('path');
 
 // Import database
 const database = require('./config/database');
@@ -13,9 +16,49 @@ const router = require('./config/routes');
 // inisiasi express
 const app = express();
 
-// parse aplication/json
-app.use(bodyParser.urlencoded({extended: true}));
+const fileStorage = multer.diskStorage({
+    destination:(req, file, cb) => {
+        cb(null,'images');
+    },
+    filename:(req, file, cb) => {
+        cb(null, Date.now().toString()+'-'+file.originalname);
+    }
+})
+
+const fileFilter = (req, file, cb) => {
+    if(file.mimetype=='image/png'||file.mimetype=='image/jpg'||file.mimetype=='image/jpeg'){
+        cb(null, true);
+    }else{
+        cb(null, false);
+    }
+}
+app.use('/images', express.static(path.join(__dirname,'images')));
+app.use(multer({storage:fileStorage, fileFilter:fileFilter}).single('gambar_resep'));
+
+// const fileStorage = multer.diskStorage({
+//     destination : (req, file, cb) => {
+//         cb(null, 'mamamia_api/images/resep/');
+//     },
+//     filename : (req, file, cb) => {
+//         cb(null, new Date().toString()+'-'+file.originalname);
+//     }
+// });
+
+// const Filter = (req, file, cb)=>{
+//     if(file.mimetype == '*.png' || file.mimetype == '*.jpg' || file.mimetype == '*.jpeg'){
+//         cb(null, true);
+//     }else{
+//         cb(null, false);
+//     }
+// }
+
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+// app.use(express.json());
+// app.use(express.urlencoded({
+//   extended: true
+// }));
 
 app.use(router);
 
