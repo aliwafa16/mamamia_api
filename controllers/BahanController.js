@@ -68,6 +68,7 @@ const Bahan_Controller = {
         }
         catch(err){
             console.log(err)
+            response.error(res, { error: err.message });
         }
     },
     deleteBahan : async (req, res) => {

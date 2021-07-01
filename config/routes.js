@@ -3,6 +3,7 @@ const Barang = require('../controllers/barangController');
 const Barang_Masuk = require('../controllers/barangMasukController')
 const Resep = require('../controllers/ResepController');
 const Bahan = require('../controllers/BahanController');
+const Masak = require('../controllers/LangkahMasakController');
 const jadwal = require('../controllers/PenjadawalanController')
 const user = require('../controllers/UserController');
 const registrasi = require('../middleware/auth');
@@ -34,6 +35,14 @@ router.get('/bahan/r/:id', Bahan.getBahanByResep);
 router.post('/bahan', Bahan.addBahan);
 router.delete('/bahan/:id', Bahan.deleteBahan);
 router.put('/bahan/:id', Bahan.updateBahan);
+
+// ROUTE LANGKAH MASAK
+router.get('/masak', Masak.getLangkahMasak);
+router.get('/masak/:id', Masak.getLangkahMemasakByID);
+router.get('/masak/r/:id', Masak.getLangkahMemasakByResep);
+router.post('/masak', Masak.addLangkahMasak);
+router.delete('/masak/:id', Masak.deleteLangkahMasak);
+router.put('/masak/:id', Masak.updateLangkahMasak);
 
 
 // ROUTE PENJADWALAN

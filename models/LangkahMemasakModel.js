@@ -1,8 +1,8 @@
 const database = require('../config/database');
 const sequelize = require ('sequelize');
 
-const LangkahMemasakModel = database.define('tbl_langkah_memasak', {
-    id_langkah_memasak : {
+const LangkahMemasakModel = database.define('tbl_langkah_masak', {
+    id_langkah_masak : {
         type : sequelize.INTEGER,
         primaryKey : true
     },
@@ -19,7 +19,7 @@ const LangkahMemasakModel = database.define('tbl_langkah_memasak', {
     createdAt : 'created_at',
     updatedAt : 'updated_at',
     sequelize,
-    tableName : 'tbl_langkah_memasak',
+    tableName : 'tbl_langkah_masak',
     modelName : 'LangkahMemasakModel'
 });
 
