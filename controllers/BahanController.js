@@ -2,11 +2,17 @@ const BahanModel = require('../models/BahanModel');
 const response = require ('../helpers/respons-parser');
 const ResepModel = require ('../models/ResepModel');
 
+BahanModel.belongsTo(ResepModel,{foreignKey:'id_resep'})
 
 const Bahan_Controller = {
     getBahan : async (req, res) => {
         try {
-            const bahan = await BahanModel.findAll();
+            const bahan = await BahanModel.findAll({
+                include : [{
+                    model : ResepModel,
+                    attributes : ['nama_resep']
+                }]
+            });
             response.success(res, {data:bahan});
         }catch(err){
             console.log(err);
