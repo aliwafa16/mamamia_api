@@ -11,7 +11,8 @@ const Bahan_Controller = {
                 include : [{
                     model : ResepModel,
                     attributes : ['nama_resep']
-                }]
+                }],
+                order : [['id_resep','DESC']]
             });
             response.success(res, {data:bahan});
         }catch(err){
@@ -56,7 +57,13 @@ const Bahan_Controller = {
     },
     addBahan : async(req, res) => {
         try {
-            await BahanModel.create(req.body);
+            const data = {
+                id_resep : req.body.id_resep,
+                bahan : req.body.bahan,
+                is_active : req.body.is_active
+            }
+
+            await BahanModel.create(data);
             response.success(res, {message:'create data success !!'})
         }catch(err){
             console.log(err)
@@ -85,6 +92,22 @@ const Bahan_Controller = {
                 }
             })
             response.success(res, { message: 'delete data success!' });
+        }catch(err){
+            console.log(err)
+            response.error(res, { error: err.message });
+        }
+    },
+    updateStat : async (req, res)=>{
+        try {
+            const state = {
+                is_active : req.body.is_active
+            }
+            await BahanModel.update(state, {
+                where : {
+                    id_bahan : req.params.id
+                }
+            })
+            response.success(res, { message: 'update data success!' });
         }catch(err){
             console.log(err)
             response.error(res, { error: err.message });

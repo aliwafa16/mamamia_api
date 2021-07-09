@@ -40,19 +40,43 @@ const Registrasi_Controller = {
                         email_user : email_user
                     }
                 });
+
                 if(user){
-                    if(md5(password_user)==user.password_user){
-                        const data = {
-                            id : user.id_user
+                    if(user.is_active==1){
+                        if(md5(password_user)==user.password_user){
+                            const data = {
+                                id : user.id_user
+                            }
+                            const token = await jwt.sign({data}, key);
+                            response.success(res, {data:{token:token,id_user:user.id_user,role_id:user.role_id,username:user.username}})
+                        }else{
+                            response.error(res, {error: 'Password Salah !!'})
                         }
-                        const token = await jwt.sign({data}, key);
-                        response.success(res, {data:{token:token,id_user:user.id_user,role_id:user.role_id,username:user.username}})
                     }else{
-                        response.error(res, {error: 'Password Salah !!'})
+                        response.error(res, {error: 'User tidak aktif !!'})
                     }
                 }else{
                     response.error(res, {error: 'Email user tidak ditemukan !!'})
                 }
+
+
+                // if(user){
+                //     if(user.is_active==1){
+                //             if(md5(password_user)==user.password_user){
+                //             const data = {
+                //                 id : user.id_user
+                //             }
+                //             const token = await jwt.sign({data}, key);
+                //             response.success(res, {data:{token:token,id_user:user.id_user,role_id:user.role_id,username:user.username}})
+                //         }else{
+                //             response.error(res, {error: 'Password Salah !!'})
+                //         }
+                //     }else{
+                //         response.error(res, {error: 'User tidak aktif !!'})
+                //     }
+                // }else{
+                //     response.error(res, {error: 'Email user tidak ditemukan !!'})
+                // }
         }catch(err){
             console.log(err);
             response.error(res, { error: err.message });

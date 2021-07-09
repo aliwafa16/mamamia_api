@@ -20,21 +20,25 @@ const router = express.Router();
 // router.get('/barangmasuk',Barang_Masuk.getBarangMasuk);
 
 // ROUTE RESEP
-router.get('/resep', Resep.getResep);
-router.get('/resep/s', Resep.getStructuredResep);
-router.get('/resep/:id', Resep.getResepByID);
-router.get('/resep/search/:term', Resep.searchResep)
-router.post('/resep', Resep.addResep);
-router.delete('/resep/:id', Resep.deleteResep);
-router.put('/resep/:id', Resep.updateResep);
+router.get('/resep', Resep.getResep);                       //(ADMIN : Mengambil seluruh data master tabel resep)
+router.get('/resep/s', Resep.getActiveResep);               //(User : Mengambil seluruh data resep aktif yang join dengan tabel bahan dan langkah memasak)
+router.get('/resep/s/:id', Resep.getActiveResepByID);           //(User : Mengambil seluruh data resep aktif yang join dengan tabel bahan dan langkah memasak berdasarkan ID)
+router.get('/resep/:id', Resep.getResepByID);               //(ADMIN : Mengambil seluruh data master tabel resep berdasarkan ID)
+router.get('/resep/search/:term', Resep.searchResep)        //(ADMIN dan User : Mencari data resep sesuai nama resep)
+router.post('/resep', Resep.addResep);                      //(ADMIN : Menambah data resep)
+router.delete('/resep/:id', Resep.deleteResep);             //(ADMIN : Menghapus data resep)
+router.delete('/resep/b/:id', Resep.deleteResepAndBahan);   //(ADMIN : Menghapus data resep sekaligus dengan bahan)
+router.put('/resep/stat/:id', Resep.updateStat);            //(ADMIN : Update status data resep aktif atau tidak)
+router.put('/resep/:id', Resep.updateResep);                //(ADMIN : Update data master tabel resep)
 
 // ROUTE BAHAN
-router.get('/bahan', Bahan.getBahan);
-router.get('/bahan/:id', Bahan.getBahanByID);
+router.get('/bahan', Bahan.getBahan);                       //(ADMIN : Mengambil seluruh data master tabel bahan)
+router.get('/bahan/:id', Bahan.getBahanByID);               //(ADMIN : Mengambil seluruh data master tabel bahan berdasarkan ID)
 router.get('/bahan/r/:id', Bahan.getBahanByResep);
 router.post('/bahan', Bahan.addBahan);
 router.delete('/bahan/:id', Bahan.deleteBahan);
 router.put('/bahan/:id', Bahan.updateBahan);
+router.put('/bahan/stat/:id', Bahan.updateStat);
 
 // ROUTE LANGKAH MASAK
 router.get('/masak', Masak.getLangkahMasak);
@@ -43,6 +47,7 @@ router.get('/masak/r/:id', Masak.getLangkahMemasakByResep);
 router.post('/masak', Masak.addLangkahMasak);
 router.delete('/masak/:id', Masak.deleteLangkahMasak);
 router.put('/masak/:id', Masak.updateLangkahMasak);
+router.put('/masak/stat/:id', Masak.updateStat);
 
 
 // ROUTE PENJADWALAN
@@ -60,6 +65,7 @@ router.get('/user/:id', user.getUserByID);
 router.post('/user', user.addUser);
 router.put('/user/:id', user.updateUser);
 router.delete('/user/:id', user.deleteUser);
+router.put('/user/stat/:id', user.updateStat);
 
 
 

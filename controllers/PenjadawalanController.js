@@ -1,11 +1,26 @@
 const PenjadwalanModel = require('../models/PenjadwalanModel');
 const response = require('../helpers/respons-parser');
-const UserModel = require('../models/UserModel')
+const UserModel = require('../models/UserModel');
+const ResepModel = require('../models/ResepModel');
 
+PenjadwalanModel.belongsTo(UserModel,{foreignKey:'id_user'});
+PenjadwalanModel.belongsTo(ResepModel,{foreignKey:'id_resep'});
 const Penjadwalan_Controller = {
     getPenjadwalan : async (req, res) => {
         try {
-            const jadwal = await PenjadwalanModel.findAll();
+            const jadwal = await PenjadwalanModel.findAll({
+                include : [{
+                    model : UserModel,
+                    attributes : ['id_user', 'username'],
+                    required : false
+                },
+                {
+                    model : ResepModel,
+                    attributes : ['id_resep', 'nama_resep'],
+                    required : false
+                }
+            ]
+            });
             response.success(res, {data : jadwal})
         }catch(err){
             console.log(err);

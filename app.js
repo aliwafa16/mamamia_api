@@ -16,6 +16,13 @@ const router = require('./config/routes');
 // inisiasi express
 const app = express();
 
+app.use((req, res, next)=>{
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers','Content-Type, Authorization');
+    next();
+});
+
 const fileStorage = multer.diskStorage({
     destination:(req, file, cb) => {
         cb(null,'images');

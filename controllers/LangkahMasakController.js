@@ -1,12 +1,19 @@
 const MasakModel = require('../models/LangkahMemasakModel');
 const response = require('../helpers/respons-parser');
 const ResepModel = require('../models/ResepModel');
-const LangkahMemasakModel = require('../models/LangkahMemasakModel');
+
+MasakModel.belongsTo(ResepModel,{foreignKey:'id_resep'})
 
 const LangkahMasak_Controller = {
     getLangkahMasak : async (req, res) => {
         try {
-            const langkahMasak = await MasakModel.findAll();
+            const langkahMasak = await MasakModel.findAll({
+                include : [{
+                    model : ResepModel,
+                    attributes :  ['nama_resep']
+                }],
+                order : [['id_resep','DESC']]
+            });
             response.success(res, {data:langkahMasak});
         }catch(err){
             console.log(err);
@@ -52,7 +59,12 @@ const LangkahMasak_Controller = {
     },
     addLangkahMasak : async (req, res) => {
         try{
-            await LangkahMemasakModel.create(req.body);
+            const data = {
+                id_resep : req.body.id_resep,
+                langkah_masak : req.body.langkah_masak,
+                is_active : req.body.is_active
+            }
+            await MasakModel.create(data);
             response.success(res, {message:'create data success !!'})
         }catch(err){
             console.log(err)
@@ -61,7 +73,7 @@ const LangkahMasak_Controller = {
     },
     updateLangkahMasak : async (req, res) => {
         try {
-            await LangkahMemasakModel.update(req.body, {
+            await MasakModel.update(req.body, {
                 where : {
                     id_langkah_masak : req.params.id
                 }
@@ -74,12 +86,28 @@ const LangkahMasak_Controller = {
     },
     deleteLangkahMasak : async (req, res) => {
         try {
-            await LangkahMemasakModel.destroy({
+            await MasakModel.destroy({
                 where : {
                     id_langkah_masak : req.params.id
                 }
             })
             response.success(res, { message: 'delete data success!' });
+        }catch(err){
+            console.log(err)
+            response.error(res, { error: err.message });
+        }
+    },
+    updateStat : async (req, res) => {
+        try {
+            const state = {
+                is_active : req.body.is_active
+            }
+            await MasakModel.update(state,{
+                where : {
+                    id_langkah_masak : req.params.id
+                }
+            })
+            response.success(res, { message: 'update data success!' });
         }catch(err){
             console.log(err)
             response.error(res, { error: err.message });

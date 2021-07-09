@@ -1,5 +1,6 @@
 const ResepModel = require ('../models/ResepModel');
 const BahanModel = require('../models/BahanModel');
+const MasakModel = require('../models/LangkahMemasakModel');
 const response = require ('../helpers/respons-parser');
 const sequelize = require('../config/database');
 const path = require('path');
@@ -8,7 +9,9 @@ const multer = require('multer');
 
 const { Op } = require("sequelize");
 
-ResepModel.hasMany(BahanModel,{foreignKey:'id_resep'});
+ResepModel.hasMany(BahanModel,{foreignKey:'id_resep', as : 'tbl_bahans'});
+ResepModel.hasMany(MasakModel,{foreignKey:'id_resep', as : 'tbl_langkah_masaks'});
+
 
 
 const Resep_Controller = {
@@ -21,13 +24,54 @@ const Resep_Controller = {
             response.error(res, { error: err.message });
         }
     },
-    getStructuredResep : async (req, res) => {
+    getActiveResep : async (req, res) => {
         try {
             const resep = await ResepModel.findAll({
                 include : [{
-                    model : BahanModel,
-                    attributes : ['bahan']
-                }]
+                    model : BahanModel, as : 'tbl_bahans',
+                    attributes : ['bahan'],
+                    where : {
+                        is_active : 1
+                    }
+                },
+                {
+                    model : MasakModel, as : 'tbl_langkah_masaks',
+                    attributes : ['langkah_masak'],
+                    where : {
+                        is_active : 1
+                    }
+                }],
+                where : {
+                    is_active : 1
+                }
+            })
+            response.success(res, {data:resep});
+        }catch(err){
+            console.log(err)
+            response.error(res, { error: err.message });
+
+        }
+    },
+    getActiveResepByID : async (req, res) => {
+        try {
+            const resep = await ResepModel.findAll({
+                include : [{
+                    model : BahanModel, as : 'tbl_bahans',
+                    attributes : ['bahan'],
+                    where : {
+                        is_active : 1
+                    }
+                },
+                {
+                    model : MasakModel, as : 'tbl_langkah_masaks',
+                    attributes : ['langkah_masak'],
+                    where : {
+                        is_active : 1
+                    }
+                }],
+                where : {
+                    id_resep : req.params.id
+                }
             })
             response.success(res, {data:resep});
         }catch(err){
@@ -38,7 +82,7 @@ const Resep_Controller = {
     },
     getResepByID : async (req, res) => {
         try {
-            const resep = await ResepModel.findAll({
+            const resep = await ResepModel.findOne({
                 where : {
                     id_resep : req.params.id
                 }
@@ -53,10 +97,15 @@ const Resep_Controller = {
         try {
             const resep = await ResepModel.findAll({
                 where : {
-                    [Op.substring] : {nama_resep : req.params.term}
-                }
+                   nama_resep : {[Op.like]: `%${req.params.term}%`}
+                },
+                attributes : ['nama_resep', 'id_resep']
             })
+            if(resep!=null){
                 response.success(res, {data:resep})
+            }else{
+                response.error(res, { error: err.message });
+            } 
         }catch(err){
             console.log(err)
             response.error(res, { error: err.message });
@@ -72,10 +121,29 @@ const Resep_Controller = {
                 bahan : req.body.bahan,
                 langkah_memasak : req.body.langkah_memasak,
                 kalori : req.body.kalori,
-                is_active : req.body.is_active 
+                is_active : 1
             }
             await ResepModel.create(data);
             response.success(res, { message: 'create data success!' });
+        }catch(err){
+            console.log(err)
+            response.error(res, { error: err.message });
+        }
+    },
+    deleteResepAndBahan : async (req, res) => {
+        try {
+            await ResepModel.destroy({
+                 where : {
+                    id_resep:req.params.id
+                }
+            })
+            await BahanModel.destroy({
+                where : {
+                    id_resep:req.params.id
+                }
+            })
+            response.success(res, { message: 'delete data success!' });
+
         }catch(err){
             console.log(err)
             response.error(res, { error: err.message });
@@ -129,6 +197,22 @@ const Resep_Controller = {
                     id_resep:req.params.id
                 }
             });
+            response.success(res, { message: 'update data success!' });
+        }catch(err){
+            console.log(err)
+            response.error(res, { error: err.message });
+        }
+    },
+    updateStat : async (req, res)=>{
+        try {
+            const state = {
+                is_active : req.body.is_active
+            }
+            await ResepModel.update(state, {
+                where : {
+                    id_resep : req.params.id
+                }
+            })
             response.success(res, { message: 'update data success!' });
         }catch(err){
             console.log(err)
