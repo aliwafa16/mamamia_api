@@ -59,6 +59,9 @@ const User_Controller = {
             response.error(res, { error: err.message });
         }
     },
+    getUserPost : async (req, res) => {
+
+    },
     updateStat : async (req, res)=>{
         try {
             const state = {

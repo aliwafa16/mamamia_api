@@ -97,7 +97,7 @@ const Resep_Controller = {
         try {
             const resep = await ResepModel.findAll({
                 where : {
-                   nama_resep : {[Op.like]: `%${req.params.term}%`}
+                    nama_resep : {[Op.like]: `%${req.params.term}%`}
                 },
                 attributes : ['nama_resep', 'id_resep']
             })

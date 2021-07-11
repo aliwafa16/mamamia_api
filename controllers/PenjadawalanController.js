@@ -95,6 +95,22 @@ const Penjadwalan_Controller = {
             console.log(err)
             response.error(res, { error: err.message }); 
         }
+    },
+    updateStat : async (req, res)=>{
+        try {
+            const state = {
+                is_active : req.body.is_active
+            }
+            await ResepModel.update(state, {
+                where : {
+                    id_penjadwal : req.params.id
+                }
+            })
+            response.success(res, { message: 'update data success!' });
+        }catch(err){
+            console.log(err)
+            response.error(res, { error: err.message });
+        }
     }
 }
 

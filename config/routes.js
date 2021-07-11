@@ -7,6 +7,7 @@ const Masak = require('../controllers/LangkahMasakController');
 const jadwal = require('../controllers/PenjadawalanController')
 const user = require('../controllers/UserController');
 const registrasi = require('../middleware/auth');
+const post = require('../controllers/PostUserController')
 
 const router = express.Router();
 
@@ -50,6 +51,7 @@ router.put('/masak/:id', Masak.updateLangkahMasak);
 router.put('/masak/stat/:id', Masak.updateStat);
 
 
+
 // ROUTE PENJADWALAN
 router.get('/jadwal', jadwal.getPenjadwalan);
 router.get('/jadwal/:id', jadwal.getPendwalanByID);
@@ -57,6 +59,7 @@ router.get('/jadwal/u/:id', jadwal.getAllPenjadwalanByUser);
 router.post('/jadwal', jadwal.addPenjadwalan);
 router.put('/jadwal/:id', jadwal.updatePenjadwalan);
 router.delete('/jadwal/:id', jadwal.deletePenjadwalan);
+router.put('/jadwal/stat/:id', jadwal.updateStat);
 
 
 // ROUTE USER
@@ -67,7 +70,13 @@ router.put('/user/:id', user.updateUser);
 router.delete('/user/:id', user.deleteUser);
 router.put('/user/stat/:id', user.updateStat);
 
-
+// ROUTE POST
+router.get('/post', post.getPost);
+router.get('/post/s/', post.getActivePost );
+router.post('/post', post.addPost);
+router.delete('/post/:id', post.deletePost);
+router.put('/post/:id', post.updatePost);
+router.put('/post/stat/:id', post.updateStat);
 
 // ROUTE REGISTRASI
 router.post('/sign-up', registrasi.signUp);
