@@ -69,6 +69,7 @@ router.post('/user', user.addUser);
 router.put('/user/:id', user.updateUser);
 router.delete('/user/:id', user.deleteUser);
 router.put('/user/stat/:id', user.updateStat);
+router.get('/user/p/:id', user.getUserPost);
 
 // ROUTE POST
 router.get('/post', post.getPost);

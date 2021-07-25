@@ -18,11 +18,8 @@ const ResepModel = database.define('tbl_resep',{
     link_youtube : {
         type : sequelize.CHAR
     },
-    bahan : {
-        type : sequelize.TEXT
-    },
-    langkah_memasak : {
-        type : sequelize.TEXT
+    asal_masakan : {
+        type : sequelize.CHAR
     },
     kalori : {
         type : sequelize.INTEGER

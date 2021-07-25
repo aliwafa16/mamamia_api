@@ -30,16 +30,10 @@ const Resep_Controller = {
                 include : [{
                     model : BahanModel, as : 'tbl_bahans',
                     attributes : ['bahan'],
-                    where : {
-                        is_active : 1
-                    }
                 },
                 {
                     model : MasakModel, as : 'tbl_langkah_masaks',
                     attributes : ['langkah_masak'],
-                    where : {
-                        is_active : 1
-                    }
                 }],
                 where : {
                     is_active : 1
@@ -118,8 +112,7 @@ const Resep_Controller = {
                 deskripsi_resep : req.body.deskripsi_resep,
                 gambar_resep : req.file.path,
                 link_youtube : req.body.link_youtube,
-                bahan : req.body.bahan,
-                langkah_memasak : req.body.langkah_memasak,
+                asal_masakan : req.body.asal_masakan,
                 kalori : req.body.kalori,
                 is_active : 1
             }
@@ -180,7 +173,7 @@ const Resep_Controller = {
             })
             deleteImageResep(Resep.gambar_resep);
             }
-             const data = {
+            const data = {
                 id_resep : req.body.id_resep,
                 nama_resep : req.body.nama_resep,
                 deskripsi_resep : req.body.deskripsi_resep,

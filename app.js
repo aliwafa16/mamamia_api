@@ -40,7 +40,7 @@ const fileFilter = (req, file, cb) => {
     }
 }
 app.use('/images', express.static(path.join(__dirname,'images')));
-app.use(multer({storage:fileStorage, fileFilter:fileFilter}).single('gambar_resep'));
+app.use(multer({storage:fileStorage, fileFilter:fileFilter}).single('gambar_resep','foto_user'));
 
 // const fileStorage = multer.diskStorage({
 //     destination : (req, file, cb) => {

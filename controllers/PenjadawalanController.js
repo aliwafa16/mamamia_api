@@ -42,21 +42,39 @@ const Penjadwalan_Controller = {
     },
     getAllPenjadwalanByUser : async (req, res) => {
         try {
-            const user = await UserModel.findOne({
-                attributes : ['full_name','username','email_user'],
-                where : {
-                    id_user : req.params.id
-                    
-                }
-            })
+
             const jadwal = await PenjadwalanModel.findAll({
-                where : {
-                    id_user : req.params.id
-                }
+                include : [
+                    {
+                        model : UserModel,
+                        attributes : ['id_user','full_name','username','email_user'],
+                        required:false
+                    },
+                    {
+                        model:ResepModel,
+                        attributes: ['id_resep','nama_resep','kalori'],
+                        required:false
+                    },
+                    {
+                        
+                    }
+                ]
             })
-            response.success(res, {data : {
-                user, jadwal
-            }})
+            // const user = await UserModel.findOne({
+            //     attributes : ['full_name','username','email_user'],
+            //     where : {
+            //         id_user : req.params.id
+                    
+            //     }
+            // })
+            // const jadwal = await PenjadwalanModel.findAll({
+            //     where : {
+            //         id_user : req.params.id
+            //     }
+            // })
+            // response.success(res, {data : {
+            //     user, jadwal
+            // }})
         }catch(err){
             console.log(err)
             response.error(res, { error: err.message });
