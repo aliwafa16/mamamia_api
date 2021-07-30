@@ -27,14 +27,23 @@ const Post_Controller = {
         try{
             const post = await PostModel.findAll({
                 include : [{
+                    model : KomentarModel,
+                    attributes : ['id_user','komentar','rating','tanggal_komentar'],
+                    include : [
+                        {
+                            model : UserModel,
+                            attributes : ['id_user', 'username', 'full_name', 'email_user']
+                        }
+                    ]
+                },
+            {
                     model : UserModel,
                     attributes : ['id_user', 'username', 'full_name'],
-                    model : KomentarModel,
-                    attributes : ['id_user','komentar','rating']
-                }],
+            }],
                 where : {
                     is_active : 1
-                }
+                },
+                order : [['id_post_user','DESC']]
             })
             response.success(res, {data:post})
         }catch(err){
@@ -47,6 +56,7 @@ const Post_Controller = {
             const data = {
                 id_user : req.body.id_user,
                 gambar : req.file.path,
+                headline : req.body.headline,
                 deskripsi : req.body.deskripsi,
                 tanggal_upload : req.body.tanggal_upload,
                 is_active : req.body.is_active
@@ -65,7 +75,6 @@ const Post_Controller = {
                     id_post_user : req.params.id
                 }
             })
-
             await KomentarModel.destroy({
                 where : {
                     id_post_user : req.params.id

@@ -16,7 +16,7 @@ const PenjadwalanModel = database.define('tbl_penjadwalan',{
         type : sequelize.INTEGER
     },
     for_date : {
-        type : sequelize.DATE
+        type : sequelize.CHAR
     },
     is_active : {
         type : sequelize.INTEGER

@@ -12,6 +12,9 @@ const PostUserModel = database.define('tbl_post_user',{
     gambar : {
         type : sequelize.CHAR
     },
+    headline : {
+        type : sequelize.CHAR
+    },
     deskripsi : {
         type : sequelize.CHAR
     },

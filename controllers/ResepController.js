@@ -30,14 +30,24 @@ const Resep_Controller = {
                 include : [{
                     model : BahanModel, as : 'tbl_bahans',
                     attributes : ['bahan'],
+                    where : [{
+                        is_active:1
+                    }
+                    ]
                 },
                 {
                     model : MasakModel, as : 'tbl_langkah_masaks',
                     attributes : ['langkah_masak'],
+                    where : [
+                        {
+                            is_active:1
+                        }
+                    ]
                 }],
                 where : {
                     is_active : 1
-                }
+                },
+                order: sequelize.random()
             })
             response.success(res, {data:resep});
         }catch(err){
@@ -90,10 +100,18 @@ const Resep_Controller = {
     searchResep : async (req,res) => {
         try {
             const resep = await ResepModel.findAll({
-                where : {
-                    nama_resep : {[Op.like]: `%${req.params.term}%`}
+                include : [{
+                    model : BahanModel, as : 'tbl_bahans',
+                    attributes : ['bahan'],
                 },
-                attributes : ['nama_resep', 'id_resep']
+                {
+                    model : MasakModel, as : 'tbl_langkah_masaks',
+                    attributes : ['langkah_masak'],
+                }],
+                where : {
+                    nama_resep : {[Op.like]: `%${req.params.term}%`},
+                    is_active : 1
+                },
             })
             if(resep!=null){
                 response.success(res, {data:resep})
@@ -136,7 +154,6 @@ const Resep_Controller = {
                 }
             })
             response.success(res, { message: 'delete data success!' });
-
         }catch(err){
             console.log(err)
             response.error(res, { error: err.message });

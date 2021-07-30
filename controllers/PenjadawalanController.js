@@ -52,14 +52,17 @@ const Penjadwalan_Controller = {
                     },
                     {
                         model:ResepModel,
-                        attributes: ['id_resep','nama_resep','kalori'],
+                        attributes: ['id_resep','nama_resep','kalori','asal_masakan','gambar_resep'],
                         required:false
-                    },
-                    {
-                        
                     }
-                ]
+
+                ],
+                where:{
+                    id_user : req.params.id,
+                    is_active : 1
+                }
             })
+            response.success(res, {data:jadwal})
             // const user = await UserModel.findOne({
             //     attributes : ['full_name','username','email_user'],
             //     where : {
@@ -109,6 +112,7 @@ const Penjadwalan_Controller = {
                     id_penjadwal : req.params.id
                 }
             })
+            response.success(res, { message: 'delete data success!' });
         }catch(err){
             console.log(err)
             response.error(res, { error: err.message }); 
@@ -119,7 +123,7 @@ const Penjadwalan_Controller = {
             const state = {
                 is_active : req.body.is_active
             }
-            await ResepModel.update(state, {
+            await PenjadwalanModel.update(state, {
                 where : {
                     id_penjadwal : req.params.id
                 }
